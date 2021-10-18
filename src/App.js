@@ -1,13 +1,26 @@
 import { Component } from 'react';
+import Form, { utils } from '@rjsf/core';
+
+import schema from './schema.json';
+
+const processSchema = (schema) => {
+  schema.anyOf.map((item) => {
+    item.title = item.required[0]
+      .replace(/_/g, ' ')
+      .replace(/(?<=^|\s+)\w/g, (v) => v.toUpperCase());
+  });
+};
+processSchema(schema);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Form
+        schema={schema}
+        onChange={console.log('changed')}
+        onSubmit={console.log('submitted')}
+        onError={console.log('errors')}
+      />
     );
   }
 }
