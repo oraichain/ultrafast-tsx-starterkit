@@ -1,0 +1,35 @@
+{
+  "name": "frontend",
+  "version": "1.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "keywords": [],
+  "browser": {},
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "optimize": "./optimize.sh",
+    "gen-ts": "node gen-ts.js",
+    "start": "cross-env NODE_ENV=development STATS=true webpack serve",
+    "vendor": "webpack --config webpack.vendor.config"
+  },
+  "dependencies": {
+    "json-schema-to-typescript": "^10.1.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@svgr/webpack": "^5.5.0",
+    "cross-env": "^7.0.3",
+    "esbuild-loader": "^2.16.0",
+    "html-webpack-plugin": "^5.4.0",
+    "node-sass": "^6.0.1",
+    "react-refresh": "^0.10.0",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "5.55.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0"
+  }
+}
