@@ -38,7 +38,7 @@ const plugins = [
     new ProvidePlugin({
       React: 'react'
     }),
-  process.env.STATS === 'true' && new ProgressPlugin(),
+  new ProgressPlugin(),
   ,
 ].filter(Boolean);
 
@@ -77,161 +77,149 @@ if (process.env.NODE_ENV === 'production') {
       }
     })
   ];
-  (optimizer.runtimeChunk = false),
-    (optimizer.splitChunks = {
-      cacheGroups: {
-        default: false
-      }
-    });
 }
 
-module.exports = (env, conf) => {
-  return {
-    stats: {
-      preset: 'minimal'
-    },
-    experiments: {
-      cacheUnaffected: true,
-      lazyCompilation: {
-        entries: false,
-        imports: isDevelopment && process.env.DISABLED_LAZY !== 'true'
-      }
-    },
-    cache: {
-      type: 'memory',
-      cacheUnaffected: true
-    },
-    watchOptions: {
-      aggregateTimeout: 100, // immediately
-      ignored: ['node_modules', 'dist', 'build']
-    },
-    devtool: devtool,
-    mode: process.env.NODE_ENV || 'development',
-    devServer: {
-      hot: true,
-      liveReload: false,
-      https: false,
-      historyApiFallback: true,
-      static: [
-        path.resolve(__dirname, 'public'),
-        path.resolve(__dirname, 'build')
-      ],
-      // for ngrok tunneling
-      allowedHosts: 'all'
-    },
-    entry: ['./src/index.js'],
-    output: output,
-    plugins: plugins,
-    optimization: optimizer,
-    target: 'web',
-    module: {
-      rules: [
-        {
-          test: /\.css$/i,
-          use: [
-            'style-loader',
-
-            {
-              loader: 'css-loader',
-              options: {
-                esModule: false
-                //sourceMap: isDevelopment
-              }
-            }
-          ]
-        },
-        {
-          test: /\.s[ac]ss$/i,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-                importLoaders: 2,
-                esModule: false,
-                modules: {
-                  compileType: 'module',
-                  mode: 'local',
-                  auto: true,
-                  namedExport: false,
-                  localIdentName: '[hash:base64:5]'
-                }
-
-                //sourceMap: isDevelopment
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: false,
-                additionalData: `@import 'src/themes/default/colors';`,
-                implementation: require('node-sass')
-              }
-            }
-          ]
-        },
-        {
-          test: /\.(png|svg|jpe?g|gif)$/,
-          include: /images/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name].[ext]',
-                outputPath: 'images/',
-                // development need proxy
-                publicPath: '/images/'
-              }
-            }
-          ]
-        },
-        {
-          test: /\.(webm|mov)$/i,
-          exclude: path.resolve(__dirname, 'node_modules'),
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 200000,
-                encoding: 'base64'
-              }
-            }
-          ]
-        },
-        {
-          test: /\.svg$/,
-          use: [
-            {
-              loader: '@svgr/webpack',
-              options: {
-                ref: true,
-                svgoConfig: {
-                  plugins: {
-                    removeViewBox: false
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
-          test: /\.(js|jsx|ts|tsx)$/,
-          include: path.resolve(__dirname, 'src'),
-          exclude: /node_modules/,
-          loader: 'esbuild-loader',
-          options: {
-            loader: 'tsx',
-            target: 'es2020',
-            minify: false
-          }
-        },
-        {
-          test: /\.xml$/,
-          exclude: /node_modules/,
-          loader: 'url-loader'
-        }
-      ]
+module.exports = {
+  stats: {
+    preset: 'minimal'
+  },
+  experiments: {
+    cacheUnaffected: true,
+    lazyCompilation: {
+      entries: false,
+      imports: isDevelopment && process.env.DISABLED_LAZY !== 'true'
     }
-  };
+  },
+  watchOptions: {
+    aggregateTimeout: 100, // immediately
+    ignored: ['node_modules', 'dist', 'build']
+  },
+  devtool: devtool,
+  mode: process.env.NODE_ENV || 'development',
+  devServer: {
+    hot: true,
+    liveReload: false,
+    https: false,
+    historyApiFallback: true,
+    static: [
+      path.resolve(__dirname, 'public'),
+      path.resolve(__dirname, 'build')
+    ],
+    // for ngrok tunneling
+    allowedHosts: 'all'
+  },
+  entry: ['./src/index.js'],
+  output: output,
+  plugins: plugins,
+  optimization: optimizer,
+  target: 'web',
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          'style-loader',
+
+          {
+            loader: 'css-loader',
+            options: {
+              esModule: false
+              //sourceMap: isDevelopment
+            }
+          }
+        ]
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              importLoaders: 2,
+              esModule: false,
+              modules: {
+                compileType: 'module',
+                mode: 'local',
+                auto: true,
+                namedExport: false,
+                localIdentName: '[hash:base64:5]'
+              }
+
+              //sourceMap: isDevelopment
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: false,
+              additionalData: `@import 'src/themes/default/colors';`,
+              implementation: require('node-sass')
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|svg|jpe?g|gif)$/,
+        include: /images/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              // development need proxy
+              publicPath: '/images/'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(webm|mov)$/i,
+        exclude: path.resolve(__dirname, 'node_modules'),
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 200000,
+              encoding: 'base64'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              ref: true,
+              svgoConfig: {
+                plugins: {
+                  removeViewBox: false
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2020',
+          minify: false
+        }
+      },
+      {
+        test: /\.xml$/,
+        exclude: /node_modules/,
+        loader: 'url-loader'
+      }
+    ]
+  }
 };

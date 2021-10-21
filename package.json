@@ -10,8 +10,8 @@
   "scripts": {
     "optimize": "./optimize.sh",
     "gen-ts": "node gen-ts.js",
-    "start": "cross-env NODE_ENV=development STATS=true webpack serve",
-    "vendor": "webpack --config webpack.vendor.config"
+    "start": "craco start",
+    "postinstall": "webpack --config webpack.vendor.config"
   },
   "dependencies": {
     "@rjsf/core": "^3.1.0",
@@ -20,6 +20,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "@craco/craco": "^6.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
     "cross-env": "^7.0.3",
@@ -27,10 +28,15 @@
     "html-webpack-plugin": "^5.4.0",
     "node-sass": "^6.0.1",
     "react-refresh": "^0.10.0",
+    "react-scripts": "5.0.0-next.47",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
-    "webpack": "5.55.1",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.0"
-  }
+    "webpack-cli": "^4.9.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
